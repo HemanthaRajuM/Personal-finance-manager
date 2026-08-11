@@ -1,0 +1,9 @@
+Flask
+Flask-MySQLdb
+Werkzeug
+Flask-WTF
+python-dotenv
+Flask-Dance
+pdfkit
+pytest
+pytest-flask
