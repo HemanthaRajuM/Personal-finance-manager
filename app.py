@@ -4,7 +4,7 @@ from functools import wraps
 
 import MySQLdb
 import MySQLdb.cursors
-from flask import Flask, jsonify, render_template, request, session
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_mysqldb import MySQL
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -20,22 +20,24 @@ def login_required(view):
     @wraps(view)
     def wrapped(*args, **kwargs):
         if "user_id" not in session:
-            return jsonify({"success": False, "message": "Authentication required"}), 401
+            if request.path.startswith("/api/"):
+                return jsonify({"success": False, "message": "Authentication required"}), 401
+            return redirect(url_for("login_page"))
         return view(*args, **kwargs)
     return wrapped
 
 
-def amount(value):
+def parse_amount(value):
     try:
-        value = Decimal(str(value)).quantize(Decimal("0.01"))
+        parsed = Decimal(str(value)).quantize(Decimal("0.01"))
     except (InvalidOperation, TypeError, ValueError):
         raise ValueError("Amount must be a valid number")
-    if not value.is_finite() or value <= 0:
+    if not parsed.is_finite() or parsed <= 0:
         raise ValueError("Amount must be greater than zero")
-    return value
+    return parsed
 
 
-def iso_date(value):
+def parse_date(value):
     try:
         return date.fromisoformat(value)
     except (TypeError, ValueError):
@@ -43,8 +45,23 @@ def iso_date(value):
 
 
 @app.get("/")
+@login_required
 def dashboard_page():
     return render_template("dashboard.html")
+
+
+@app.get("/login")
+def login_page():
+    if "user_id" in session:
+        return redirect(url_for("dashboard_page"))
+    return render_template("login.html")
+
+
+@app.get("/register")
+def register_page():
+    if "user_id" in session:
+        return redirect(url_for("dashboard_page"))
+    return render_template("register.html")
 
 
 @app.get("/health")
@@ -115,8 +132,8 @@ def create_expense():
     if not category or len(category) > 50 or not description or len(description) > 255:
         return jsonify({"success": False, "message": "Invalid category or description"}), 400
     try:
-        expense_amount = amount(data.get("amount"))
-        expense_date = iso_date(data.get("date"))
+        expense_amount = parse_amount(data.get("amount"))
+        expense_date = parse_date(data.get("date"))
     except ValueError as error:
         return jsonify({"success": False, "message": str(error)}), 400
     cursor = mysql.connection.cursor()
