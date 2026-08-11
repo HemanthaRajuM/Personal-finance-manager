@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FinancePro Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid px-4">
+      <span class="navbar-brand fw-semibold">FinancePro</span>
+      <button id="logoutButton" class="btn btn-outline-light btn-sm">Log out</button>
+    </div>
+  </nav>
+
+  <main class="container-fluid px-4 py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+      <div>
+        <p class="eyebrow mb-1">PERSONAL FINANCE</p>
+        <h1 class="h3 mb-1">Your financial overview</h1>
+        <p class="text-secondary mb-0">Track spending and make better monthly decisions.</p>
+      </div>
+      <label class="period-control">Reporting month
+        <input id="monthInput" class="form-control" type="month">
+      </label>
+    </div>
+
+    <section class="row g-3 mb-4" aria-label="Monthly summary">
+      <div class="col-sm-6 col-xl-3"><article class="metric-card"><span>Income</span><strong id="incomeValue">₹0.00</strong><small>This month</small></article></div>
+      <div class="col-sm-6 col-xl-3"><article class="metric-card"><span>Expenses</span><strong id="expenseValue">₹0.00</strong><small>This month</small></article></div>
+      <div class="col-sm-6 col-xl-3"><article class="metric-card accent"><span>Savings</span><strong id="savingsValue">₹0.00</strong><small>Income minus expenses</small></article></div>
+      <div class="col-sm-6 col-xl-3"><article class="metric-card"><span>Transactions</span><strong id="transactionCount">0</strong><small>Recorded expenses</small></article></div>
+    </section>
+
+    <div id="message" class="alert d-none" role="status"></div>
+
+    <div class="row g-4">
+      <section class="col-xl-4">
+        <div class="panel h-100">
+          <div class="panel-heading"><h2 class="h5 mb-0">Add expense</h2><span class="badge text-bg-light">Secure entry</span></div>
+          <form id="expenseForm" class="row g-3 mt-1">
+            <div class="col-12"><label class="form-label" for="category">Category</label><input id="category" name="category" class="form-control" maxlength="50" required></div>
+            <div class="col-12"><label class="form-label" for="description">Description</label><input id="description" name="description" class="form-control" maxlength="255" required></div>
+            <div class="col-md-6"><label class="form-label" for="amount">Amount (₹)</label><input id="amount" name="amount" class="form-control" type="number" min="0.01" step="0.01" required></div>
+            <div class="col-md-6"><label class="form-label" for="expenseDate">Date</label><input id="expenseDate" name="date" class="form-control" type="date" required></div>
+            <div class="col-12"><button class="btn btn-primary w-100" type="submit">Add expense</button></div>
+          </form>
+        </div>
+      </section>
+
+      <section class="col-xl-8">
+        <div class="panel h-100">
+          <div class="panel-heading"><div><h2 class="h5 mb-1">Recent expenses</h2><p class="text-secondary small mb-0">Your latest recorded transactions</p></div><span id="loading" class="small text-secondary"></span></div>
+          <div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Date</th><th>Description</th><th>Category</th><th class="text-end">Amount</th></tr></thead><tbody id="expenseRows"><tr><td colspan="4" class="text-center text-secondary py-5">No expenses loaded.</td></tr></tbody></table></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

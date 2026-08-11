@@ -1,0 +1,21 @@
+:root { --ink: #172033; --muted: #697386; --line: #e7eaf0; --surface: #ffffff; --canvas: #f5f7fb; --brand: #3458db; }
+body { background: var(--canvas); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; }
+main { max-width: 1600px; margin: auto; }
+.eyebrow { color: var(--brand); font-size: .72rem; font-weight: 800; letter-spacing: .12em; }
+.period-control { color: var(--muted); font-size: .8rem; font-weight: 600; }
+.period-control input { margin-top: .35rem; min-width: 170px; }
+.metric-card, .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 5px 20px rgba(23,32,51,.04); }
+.metric-card { min-height: 140px; padding: 1.25rem; display: flex; flex-direction: column; gap: .35rem; }
+.metric-card span, .metric-card small { color: var(--muted); }
+.metric-card strong { font-size: 1.7rem; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.metric-card.accent { background: linear-gradient(135deg, #3458db, #243eac); color: white; }
+.metric-card.accent span, .metric-card.accent small { color: #dbe4ff; }
+.panel { padding: 1.25rem; }
+.panel-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+.form-label { color: var(--muted); font-size: .82rem; font-weight: 650; }
+.form-control { border-color: var(--line); border-radius: 10px; padding: .7rem .8rem; }
+.form-control:focus { border-color: var(--brand); box-shadow: 0 0 0 .2rem rgba(52,88,219,.12); }
+.table { --bs-table-bg: transparent; }
+.table th { color: var(--muted); font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+.table td { border-color: var(--line); }
+.amount { font-variant-numeric: tabular-nums; font-weight: 700; }
